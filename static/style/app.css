@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+html, body {
+    background-color: #191414;
+    color: white;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+:root {
+    --background: #191414;
+    --text: white;
+    --accent: #1DB954;
+    --accent-light: #1db95496;
+}
