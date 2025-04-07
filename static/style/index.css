@@ -15,7 +15,7 @@
     display: grid;
     place-items: center;
 
-    background: linear-gradient(45deg, #1DB954, #35b160, #32bd62 );
+    background: linear-gradient(45deg, #1DB954, #27ba5b, #00ff59 );
     background-size: 200% 200%;
     animation: gradientMove 10s ease infinite;
 }

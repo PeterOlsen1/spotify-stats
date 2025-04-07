@@ -1,12 +1,16 @@
-<script>
+<script lang="ts">
     import { goto } from "$app/navigation";
-    import getUserState from "$lib/state/userState.svelte";
+    import getUserState, { awaitUserState } from "$lib/state/userState.svelte";
+    import { onMount } from "svelte";
 
-    const userState = getUserState();
-    console.log(userState);
-    // const userData = $derived(userState ? userState.userData : null);
-    // $inspect(userData);
-    
+    let userState: any = $state(null);
+    let userInitialized = $state(false);
+
+    onMount(async () => {
+        userState = await awaitUserState();
+        userInitialized = true;
+        // console.log(userState.userData.images);
+    });
 </script>
 
 <style>
@@ -21,7 +25,7 @@
 
     header .title {
         font-family: "Spotify Mix Medium";
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: var(--text);
         margin: 0;
         padding-left: 0.5em;
@@ -42,10 +46,14 @@
         statify.
     </div>
     <div style="flex-grow: 1"></div>
-    <button onclick={() => console.log(userState)}>
+    <button onclick={() => console.log(getUserState())}>
         cliock me
     </button>
     <div>
-        <!-- <img src="{userState ? userState.userData.images[0] : '/blank-user.webp'}" alt=""> -->
+        {#if userInitialized}
+            <img src="{userState.userData.images[0]}" alt="user">
+        {:else}
+            <img src="/blank-user.webp" alt="blank user" style="filter: invert(1);">
+        {/if}
     </div>
 </header>

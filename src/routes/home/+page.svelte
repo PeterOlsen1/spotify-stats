@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Header from "$lib/components/Header.svelte";
     import { page } from "$app/state";
     import User from "$lib/classes/user";
     import getUserState, { setUserState } from "$lib/state/userState.svelte";
@@ -13,6 +12,7 @@
     }
     const userState =  getUserState() ?? setUserState(new User(token));
 
+    // state / function for top tracks
     let topTrackData: any = $state([]);
     async function topTracks() {
         if (!userState) {
