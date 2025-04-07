@@ -1,11 +1,27 @@
 class User {
     accessToken = "";
+    userData: any = null;
 
     constructor(accessToken: string) {
         this.accessToken = accessToken;
+
+        if (!this.accessToken) {
+            return;
+        }
+
+        //load user data asynchronously
+        //workaround to avoid using async/await in the constructor
+        (async () => {
+            this.userData = await this.getUserProfile();
+        })();
     }
 
     async getUserProfile() {
+        //naive cache
+        if (this.userData) {
+            return this.userData;
+        }
+
         const url = "https://api.spotify.com/v1/me";
         const options = {
             method: "GET",

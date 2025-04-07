@@ -1,6 +1,6 @@
 .split-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 11fr 9fr;
     place-content: center;
     place-items: center;
     width: 100vw;
@@ -8,20 +8,110 @@
 }
 
 .left {
-    background-color: white;
+    /* background-color: var(--accent); */
     height: 100vh;
     width: 100%;
     align-items: center;
     display: grid;
-    grid-template-rows: 6fr 4fr;
+    place-items: center;
+
+    background: linear-gradient(45deg, #1DB954, #35b160, #32bd62 );
+    background-size: 200% 200%;
+    animation: gradientMove 10s ease infinite;
+}
+
+@keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
 }
 
 .left-bottom {
-    background-color: var(--accent-light);
     height: 100%;
     width: 100%;
+    align-items: start;
+    display: flex;
+    justify-content: center;
 }
 
-.left-top {
-    color: black;
+.login-button {
+    background-color: var(--background);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.title {
+    font-family: 'Spotify Mix Extrabold';
+    font-weight: bold;
+
+    letter-spacing: 0.1rem;
+    font-size: 6rem;
+    color: var(--background);
+    position: relative;
+    margin-top: 1em;
+    user-select: none;
+
+    &::before {
+        content: "Statify.";
+        position: absolute;
+        letter-spacing: 0.1rem;
+        left: -0.35em;
+        top: -0.35em;
+        color: var(--accent);
+        -webkit-text-stroke: 2px black;
+        opacity: 0.1;
+        animation: float-before 45s ease infinite;
+    }
+
+    &::after {
+        content: "Statify.";
+        position: absolute;
+        letter-spacing: 0.1rem;
+        left: 0.35em;
+        top: 0.35em;
+        color: var(--accent);
+        -webkit-text-stroke: 2px black;
+        opacity: 0.1;
+        animation: float-after 45s ease infinite;
+    }
+}
+
+.subtitle {
+    text-align: center;
+    margin-top: 2em;
+}
+
+
+@keyframes float-before {
+    0%, 100% {
+      transform: translate(-0.35em, 0em);
+    }
+
+    50% {
+      transform: translate(1em, 0);
+    }
+}
+  
+@keyframes float-after {
+    0%, 100% {
+      transform: translate(0.35em, 0em);
+    }
+
+    50% {
+      transform: translate(-1em, 0);
+    }
 }

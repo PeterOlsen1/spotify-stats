@@ -3,11 +3,21 @@
 html, body {
     background-color: #191414;
     color: white;
-    font-family: "Inter", sans-serif;
+    /* font-family: "Inter", sans-serif; */
+    font-family: 'Spotify Mix', sans-serif;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
     height: 100%;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
 }
 
 :root {
@@ -15,4 +25,53 @@ html, body {
     --text: white;
     --accent: #1DB954;
     --accent-light: #1db95496;
+    --background-light: #242222;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('/font/SpotifyMix-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Spotify Mix Light';
+    src: url('/font/SpotifyMix-Light.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Spotify Mix Extrabold';
+    src: url('/font/SpotifyMix-Extrabold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Spotify Mix Medium';
+    src: url('/font/SpotifyMix-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 2.5em;
+    aspect-ratio: 1;
+    --c: no-repeat linear-gradient(var(--accent) 0 0);
+    background: 
+      var(--c) 0%   100%,
+      var(--c) 50%  100%,
+      var(--c) 100% 100%;
+    animation: l2 1s infinite linear;
+  }
+  @keyframes l2 {
+    0%  {background-size: 20% 100%,20% 100%,20% 100%}
+    20% {background-size: 20% 45% ,20% 100%,20% 100%}
+    40% {background-size: 20% 80% ,20% 60% ,20% 100%}
+    60% {background-size: 20% 100%,20% 80% ,20% 50% }
+    80% {background-size: 20% 100%,20% 100%,20% 80% }
+    100%{background-size: 20% 100%,20% 100%,20% 100%}
 }
