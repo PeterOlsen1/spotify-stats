@@ -11,9 +11,9 @@ class User {
 
         //load user data asynchronously
         //workaround to avoid using async/await in the constructor
-        (async () => {
-            this.userData = await this.getUserProfile();
-        })();
+        // (async () => {
+        //     this.userData = await this.getUserProfile();
+        // })();
     }
 
     async getUserProfile() {

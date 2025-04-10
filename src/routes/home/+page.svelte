@@ -10,7 +10,9 @@
     if (!token) {
         console.error("No access token found in URL");
     }
-    const userState =  getUserState() ?? setUserState(new User(token));
+    sessionStorage.setItem("access_token", token);
+    const userState = new User(token);
+    // const userState =  getUserState() ?? setUserState(new User(token));
 
     // state / function for top tracks
     let topTrackData: any = $state([]);
