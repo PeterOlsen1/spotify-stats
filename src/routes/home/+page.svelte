@@ -1,18 +1,13 @@
 <script lang="ts">
     import { page } from "$app/state";
     import User from "$lib/classes/user";
-    import getUserState, { setUserState } from "$lib/state/userState.svelte";
+    import { onMount } from "svelte";
+
+    let userState: User;
 
     const hash = page.url.hash.slice(1);
     const params = new URLSearchParams(hash);
-
     const token = params.get("access_token") || "";
-    if (!token) {
-        console.error("No access token found in URL");
-    }
-    sessionStorage.setItem("access_token", token);
-    const userState = new User(token);
-    // const userState =  getUserState() ?? setUserState(new User(token));
 
     // state / function for top tracks
     let topTrackData: any = $state([]);
@@ -26,6 +21,10 @@
         console.log(topTrackData);
     }
 
+    onMount(() => {
+        //need to set the user state here (should be the only time)
+        userState = new User(token);
+    })
 </script>
 
 <svelte:head>
