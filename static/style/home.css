@@ -8,7 +8,13 @@
 
 .card {
     padding: 2em;
-    background-color: var(--background-light)
+    background-color: var(--background-light);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+        transform: matrix(1.03, 0, 0, 1.03, 0, 0);
+    }
 }
 
 .card-title {

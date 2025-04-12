@@ -56,7 +56,7 @@
 
 <header>
     <img src="/spotify-logo.png" alt="spotify logo">
-    <div class="title" onclick={() => goto("/")}>
+    <div class="title" onclick={() => goto("/home")}>
         statify.
     </div>
     <div style="flex-grow: 1"></div>

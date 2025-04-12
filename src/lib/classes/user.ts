@@ -99,8 +99,116 @@ class User {
         return data;
     }
 
-    async getUserTopTracks() {
-        let url = "https://api.spotify.com/v1/me/top/tracks";
+    async getUserTopTracks(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
+        let url = "https://api.spotify.com/v1/me/top/tracks?time_range=" + timeframe;
+        const options = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+
+        let items = [];
+        for (let i = 0; i < pages; i++) {
+            const result = await fetch(url, options);
+            const data = await result.json();
+            for (let item of data.items) {
+                items.push(item);
+            }
+            url = data.next;
+
+            if (!url) {
+                break;
+            }
+        }
+
+        return items;
+    }
+
+    /**
+     * A generator function version of getUserTopTracks.
+     * 
+     * This is much more friendly for using multiple pages,
+     * since we don't need to wait for all pages to finish fetching
+     * before we can use the data
+     */
+    async *generateUserTopTracks(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
+        let url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeframe}`;
+        const options = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+            }
+        };
+
+        for (let i = 0; i < pages; i++) {
+            const result = await fetch(url, options);
+            const data = await result.json();
+
+            for (let item of data.items) {
+                yield item;
+            }
+
+            url = data.next;
+            if (!url) break;
+        }
+    }
+
+    async getUserTopArtists(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
+        let url = "https://api.spotify.com/v1/me/top/artists?time_range=" + timeframe;
+        const options = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        };
+        let items = [];
+        for (let i = 0; i < pages; i++) {
+            const result = await fetch(url, options);
+            const data = await result.json();
+            for (let item of data.items) {
+                items.push(item);
+            }
+            url = data.next;
+            if (!url) {
+                break;
+            }
+        }
+
+        return items;
+    }
+
+    /**
+     * A generator function version of getUserTopArtists.
+     * 
+     * This is much more friendly for using multiple pages,
+     * since we don't need to wait for all pages to finish fetching
+     * before we can use the data
+     */
+    async *generateUserTopArtists(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
+        let url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}`;
+        const options = {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`,
+            }
+        };
+
+        for (let i = 0; i < pages; i++) {
+            const result = await fetch(url, options);
+            const data = await result.json();
+
+            for (let item of data.items) {
+                yield item;
+            }
+
+            url = data.next;
+            if (!url) break;
+        }
+    }
+
+    async getUserPlaylists() {
+        let url = "https://api.spotify.com/v1/me/playlists";
         const options = {
             method: "GET",
             headers: {
@@ -122,6 +230,7 @@ class User {
             }
         }
 
+        console.log(items);
         return items;
     }
 }

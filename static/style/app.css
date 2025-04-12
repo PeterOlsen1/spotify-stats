@@ -25,7 +25,9 @@ main {
     --text: white;
     --accent: #1DB954;
     --accent-light: #1db95496;
+    --accent-dark: #1e8a44;
     --background-light: #242222;
+    --background-lighter: #302f2f;
 }
 
 @font-face {
@@ -74,4 +76,24 @@ main {
     60% {background-size: 20% 100%,20% 80% ,20% 50% }
     80% {background-size: 20% 100%,20% 100%,20% 80% }
     100%{background-size: 20% 100%,20% 100%,20% 100%}
+}
+
+button {
+    /* background-color: var(--accent-dark); */
+    background-color: var(--background-light);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    user-select: none;
+
+    transition: background-color 0.3s ease;
+    &:hover {
+        background-color: var(--background-lighter);
+    }
 }

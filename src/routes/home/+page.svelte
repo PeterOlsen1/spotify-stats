@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import { page } from "$app/state";
     import User from "$lib/classes/user";
     import { onMount } from "svelte";
@@ -17,8 +18,7 @@
             return;
         }
 
-        topTrackData = await userState.getUserTopTracks();
-        console.log(topTrackData);
+        topTrackData = await userState.getUserPlaylists();
     }
 
     onMount(() => {
@@ -37,17 +37,13 @@
     <p>explore any of the buttons below to get started</p>
     <br>
     <div class="body">
-        <div class="card">
+        <div class="card" onclick={() => goto("/tracks")}>
             <div class="card-title">Top Tracks</div>
             <p>Get your top tracks of all time</p>
         </div>
-        <div class="card">
+        <div class="card" onclick={() => goto("/artists")}>
             <div class="card-title">Top Artists</div>
             <p>Get your top artists of all time</p>
-        </div>
-        <div class="card">
-            <div class="card-title">Top Genres</div>
-            <p>Get your top genres of all time</p>
         </div>
     </div>
 
