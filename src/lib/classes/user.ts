@@ -99,8 +99,14 @@ class User {
         return data;
     }
 
-    async getUserTopTracks(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
-        let url = "https://api.spotify.com/v1/me/top/tracks?time_range=" + timeframe;
+    async getUserTopTracks(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", tracks: number = 1) {
+        const pages = Math.ceil(tracks / 50);
+        let limit = 50;
+        if (pages == 1) {
+            limit = tracks;
+        }
+
+        let url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeframe}&limit=${limit}`;
         const options = {
             method: "GET",
             headers: {
@@ -110,6 +116,10 @@ class User {
 
         let items = [];
         for (let i = 0; i < pages; i++) {
+            if (i == pages - 1) {
+                url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeframe}&limit=${tracks - (i * 50)}&offset=${i * 50}`;
+            }
+
             const result = await fetch(url, options);
             const data = await result.json();
             for (let item of data.items) {
@@ -132,8 +142,13 @@ class User {
      * since we don't need to wait for all pages to finish fetching
      * before we can use the data
      */
-    async *generateUserTopTracks(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
-        let url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeframe}`;
+    async *generateUserTopTracks(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", tracks: number = 1) {
+        const pages = Math.ceil(tracks / 50);
+        let limit = 50;
+        if (pages == 1) {
+            limit = tracks;
+        }
+        let url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeframe}&limit=${limit}`;
         const options = {
             method: "GET",
             headers: {
@@ -142,8 +157,13 @@ class User {
         };
 
         for (let i = 0; i < pages; i++) {
+            if (i == pages - 1) {
+                url = `https://api.spotify.com/v1/me/top/tracks?time_range=${timeframe}&limit=${tracks - (i * 50)}&offset=${i * 50}`;
+            }
+
             const result = await fetch(url, options);
             const data = await result.json();
+            console.log(data);
 
             for (let item of data.items) {
                 yield item;
@@ -154,8 +174,14 @@ class User {
         }
     }
 
-    async getUserTopArtists(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
-        let url = "https://api.spotify.com/v1/me/top/artists?time_range=" + timeframe;
+    async getUserTopArtists(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", artists: number = 1) {
+        const pages = Math.ceil(artists / 50);
+        let limit = 50;
+        if (pages == 1) {
+            limit = artists;
+        }
+
+        let url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}&limit=${limit}`;
         const options = {
             method: "GET",
             headers: {
@@ -164,6 +190,10 @@ class User {
         };
         let items = [];
         for (let i = 0; i < pages; i++) {
+            if (i == pages - 1) {
+                url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}&limit=${artists - (i * 50)}&offset=${i * 50}`;
+            }
+
             const result = await fetch(url, options);
             const data = await result.json();
             for (let item of data.items) {
@@ -185,8 +215,14 @@ class User {
      * since we don't need to wait for all pages to finish fetching
      * before we can use the data
      */
-    async *generateUserTopArtists(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", pages: number = 1) {
-        let url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}`;
+    async *generateUserTopArtists(timeframe: "short_term" | "medium_term" | "long_term" = "medium_term", artists: number = 1) {
+        const pages = Math.ceil(artists / 50);
+        let limit = 50;
+        if (pages == 1) {
+            limit = artists;
+        }
+
+        let url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}&limit=${limit}`;
         const options = {
             method: "GET",
             headers: {
@@ -195,6 +231,10 @@ class User {
         };
 
         for (let i = 0; i < pages; i++) {
+            if (i == pages - 1) {
+                url = `https://api.spotify.com/v1/me/top/artists?time_range=${timeframe}&limit=${artists - (i * 50)}&offset=${i * 50}`;
+            }
+            
             const result = await fetch(url, options);
             const data = await result.json();
 

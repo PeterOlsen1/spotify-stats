@@ -4,7 +4,7 @@
     import { fade } from "svelte/transition";
 
     let user: User | null = $state(null);
-    let tracks = $state(1);
+    let tracks = $state(20);
     let loading = $state(true);
     let trackData: any = $state([]);
 
@@ -26,7 +26,7 @@
         user = new User();
         console.log(user);
 
-        trackData = await user.getUserTopTracks("long_term", 1);
+        trackData = await user.getUserTopTracks("long_term", tracks);
         loading = false;
         console.log(trackData);
     })
@@ -64,9 +64,6 @@
         justify-content: center;
         align-items: center;
         margin-top: 0.3em;
-        small {
-            font-size: 0.8em;
-        }
     }
 
     input[type="number"] {
@@ -93,8 +90,8 @@
         <button onclick={() => refreshTracks("short_term", tracks)}>Last 4 Weeks</button>
     </div>
     <div class="count">
-        <div>tracks: <input type="number" bind:value={tracks} min="1" max="10" /></div>
-        <small>each "page" is 20 tracks, increasing pages increases load time</small>
+        <div>Tracks: <input type="number" bind:value={tracks} min="1" /></div>
+        <!-- <small>each "page" is 20 tracks, increasing pages increases load time</small> -->
     </div>
 
     <br>
@@ -105,7 +102,7 @@
             {#each trackData as track, i (track.id)}
                 <div in:fade|global={{ delay: i * 50, duration: 500 }} class="track">
                     <b style="color: var(--accent)">{i + 1}:</b> 
-                    <img src={track.album.images[0].url} alt="album cover" class="track-image">
+                    <img src={track.album.images[0].url} alt="Album" class="track-image">
                     <div>
                         {track.name} - {track.artists.map((artist: any) => " " + artist.name)}
                     </div>

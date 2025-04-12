@@ -4,11 +4,12 @@
     import { fade } from "svelte/transition";
 
     let user: User | null = $state(null);
-    let pages = $state(1);
+    let numArtists = $state(20);
     let loading = $state(true);
     let artistData: any = $state([]);
+    let genreData: any = {};
 
-    async function refreshArtists(timeframe: any, pages: number) {
+    async function refreshArtists(timeframe: any, numArtists: number) {
         if (!user) {
             console.log("User is not initialized");
             return;
@@ -16,11 +17,19 @@
 
         loading = true;
         artistData = [];
-        for await (const artist of user.generateUserTopArtists(timeframe, pages)) {
+        for await (const artist of user.generateUserTopArtists(timeframe, numArtists)) {
             loading = false;
             artistData = [...artistData, artist];
+
+            console.log(artist);
+            for (const g of artist.genres) {
+                if (genreData[g]) {
+                    genreData[g] += 1;
+                } else {
+                    genreData[g] = 1;
+                }
+            }
         }
-        console.log(artistData);
     }
 
     function sortPopulariuty() {
@@ -33,9 +42,9 @@
         user = new User();
         console.log(user);
 
-        artistData = await user.getUserTopArtists("long_term", 1);
+        artistData = await user.getUserTopArtists("long_term", numArtists);
         loading = false;
-        console.log(artistData);
+        console.log(genreData);
     })
 </script>
 
@@ -71,9 +80,6 @@
         justify-content: center;
         align-items: center;
         margin-top: 0.3em;
-        small {
-            font-size: 0.8em;
-        }
     }
 
     input[type="number"] {
@@ -94,14 +100,18 @@
     }
 </style>
 
+<svelte:head>
+    <title>Top Artists</title>
+</svelte:head>
+
 <main>
     <h1>
         Your top artists
     </h1>
     <div class="buttons">
-        <button onclick={() => refreshArtists("long_term", pages)}>Last Year</button>
-        <button onclick={() => refreshArtists("medium_term", pages)}>Last 6 Months</button>
-        <button onclick={() => refreshArtists("short_term", pages)}>Last 4 Weeks</button>
+        <button onclick={() => refreshArtists("long_term", numArtists)}>Last Year</button>
+        <button onclick={() => refreshArtists("medium_term", numArtists)}>Last 6 Months</button>
+        <button onclick={() => refreshArtists("short_term", numArtists)}>Last 4 Weeks</button>
     </div>
     <!-- <div class="buttons">
         <button onclick={() => sortPopulariuty()}>
@@ -109,9 +119,7 @@
         </button>
     </div> -->
     <div class="count">
-        <div>Pages: <input type="number" bind:value={pages} min="1" max="10" /></div>
-        <!-- <br> -->
-        <small>each "page" is 20 artists, increasing pages increases load time</small>
+        <div>Artists: <input type="number" bind:value={numArtists} min="1" max="10" /></div>
     </div>
 
     <br>
@@ -122,7 +130,7 @@
             {#each artistData as artist, i (artist.id)}
                 <div in:fade|global={{ delay: i * 50, duration: 500 }} class="artist">
                     <b style="color: var(--accent)">{i + 1}:</b> 
-                    <img src={artist.images[0].url} alt="album cover" class="artist-image">
+                    <img src={artist.images.length ? artist.images[0].url: ""} alt="Artist" class="artist-image">
                     <div>
                         {artist.name}
                     </div>
