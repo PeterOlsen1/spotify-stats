@@ -20,13 +20,18 @@
         for await (const artist of user.generateUserTopArtists(timeframe, numArtists)) {
             loading = false;
             artistData = [...artistData, artist];
+        }
 
-            console.log(artist);
+        constructGenereData();
+    }
+
+    function constructGenereData() {
+        for (const artist of artistData) {
             for (const g of artist.genres) {
                 if (genreData[g]) {
-                    genreData[g] += 1;
+                    genreData[g].push(artist);
                 } else {
-                    genreData[g] = 1;
+                    genreData[g] = [artist];
                 }
             }
         }
@@ -40,9 +45,9 @@
 
     onMount(async () => {
         user = new User();
-        console.log(user);
 
         artistData = await user.getUserTopArtists("long_term", numArtists);
+        constructGenereData();
         loading = false;
         console.log(genreData);
     })

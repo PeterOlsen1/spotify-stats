@@ -7,7 +7,6 @@ class User {
 
     constructor(accessToken?: string) {
         this.ss = new SessionStorage();
-        console.log(accessToken);
 
         //caller didn't pass in access token, likely in session storage
         if (!accessToken) {
@@ -34,13 +33,11 @@ class User {
             this.accessToken = accessToken ?? "";
         }
 
-        console.log(this.ss.getItem("accessToken"));
 
         //load user data asynchronously
         //workaround to avoid using async/await in the constructor
         (async () => {
             this.userData = await this.getUserProfile();
-            console.log(this.userData);
         })();
     }
 
@@ -92,7 +89,6 @@ class User {
 
         const result = await fetch(url, options);
         const data = await result.json();
-        console.log(data);
 
         this.ss.setJSON("userData", data);
         this.userData = data;
@@ -163,7 +159,6 @@ class User {
 
             const result = await fetch(url, options);
             const data = await result.json();
-            console.log(data);
 
             for (let item of data.items) {
                 yield item;
@@ -270,7 +265,6 @@ class User {
             }
         }
 
-        console.log(items);
         return items;
     }
 }

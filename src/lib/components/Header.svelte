@@ -10,7 +10,6 @@
         user = new User();
         await user.awaitUserState();
         userInitialized = true;
-        console.log(user.userData.images);
     });
 </script>
 
