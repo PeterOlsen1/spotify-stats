@@ -79,6 +79,7 @@ main {
 }
 
 button {
+    font-family: 'Spotify Mix';
     /* background-color: var(--accent-dark); */
     background-color: var(--background-light);
     color: white;
@@ -96,4 +97,8 @@ button {
     &:hover {
         background-color: var(--background-lighter);
     }
+}
+
+input {
+    font-family: 'Spotify Mix';
 }

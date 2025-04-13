@@ -9,6 +9,10 @@
     let artistData: any = $state([]);
     let genreData: any = {};
 
+    let genreMapTab: HTMLDivElement | null = $state(null);
+    let topArtistsTab: HTMLDivElement | null = $state(null);
+    let topArtistsTabSelected = $state(true);
+
     async function refreshArtists(timeframe: any, numArtists: number) {
         if (!user) {
             console.log("User is not initialized");
@@ -41,6 +45,18 @@
         artistData.sort((a: any, b: any) => {
             return b.popularity - a.popularity;
         });
+    }
+
+    function handleTabClick(e: MouseEvent) {
+        if (topArtistsTabSelected) {
+            topArtistsTab?.classList.remove("selected");
+            genreMapTab?.classList.add("selected");
+        }
+        else if (!topArtistsTabSelected) {
+            genreMapTab?.classList.remove("selected");
+            topArtistsTab?.classList.add("selected");
+        }
+        topArtistsTabSelected = !topArtistsTabSelected;
     }
 
     onMount(async () => {
@@ -103,6 +119,63 @@
         flex-wrap: wrap;
         align-items: center;
     }
+
+    .tab-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+        /* border-bottom: 1px solid white; */
+        margin-bottom: 1em;
+        position: relative;
+    }
+
+    .tab-container::before,
+    .tab-container::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 20%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, white);
+    }
+
+    .tab-container::before {
+        right: 50%;
+    }
+
+    .tab-container::after {
+        left: 50%;
+        background: linear-gradient(to left, transparent, white);
+    }
+
+    .tab {
+        padding: 0.5em;
+        border-radius: 0.1em 0.1em 0 0;
+        background-color: var(--background);
+        color: var(--text);
+        cursor: pointer;
+
+        border: 1px solid white;
+        z-index: 1;
+        position: relative;
+        user-select: none;
+
+        transition: background-color 0.3s ease;
+        &:hover {
+            background-color: var(--background-lighter);
+        }
+    }
+    
+    .selected {
+        border-bottom: 0;
+        cursor: default;
+
+        &:hover {
+            background-color: var(--background);
+        }
+    }
 </style>
 
 <svelte:head>
@@ -126,11 +199,20 @@
     <div class="count">
         <div>Artists: <input type="number" bind:value={numArtists} min="1" max="10" /></div>
     </div>
-
+    
     <br>
+    <div class="tab-container">
+        <div class="tab" bind:this={genreMapTab} onclick={handleTabClick}>
+            Genre Map
+        </div>
+        <div class="tab selected" bind:this={topArtistsTab} onclick={handleTabClick}>
+            Top Artists
+        </div>
+    </div>
     {#if loading}
         <div class="loader"></div>
     {:else}
+    {#if topArtistsTabSelected}
         <div class="artist-container">
             {#each artistData as artist, i (artist.id)}
                 <div in:fade|global={{ delay: i * 50, duration: 500 }} class="artist">
@@ -142,5 +224,10 @@
                 </div>
             {/each}
         </div>
+    {:else}
+        <div>
+
+        </div>
+    {/if}
     {/if}
 </main>
