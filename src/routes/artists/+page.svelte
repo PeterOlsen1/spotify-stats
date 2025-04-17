@@ -2,6 +2,8 @@
     import User from "$lib/classes/user";
     import { onMount } from "svelte";
     import { fade } from "svelte/transition";
+    import { data } from "$lib/data/data";
+    import GenreMap from "$lib/components/GenreMap.svelte";
 
     let user: User | null = $state(null);
     let numArtists = $state(20);
@@ -11,7 +13,7 @@
 
     let genreMapTab: HTMLDivElement | null = $state(null);
     let topArtistsTab: HTMLDivElement | null = $state(null);
-    let topArtistsTabSelected = $state(true);
+    let topArtistsTabSelected = $state(false);
 
     async function refreshArtists(timeframe: any, numArtists: number) {
         if (!user) {
@@ -62,8 +64,10 @@
     onMount(async () => {
         user = new User();
 
-        artistData = await user.getUserTopArtists("long_term", numArtists);
-        constructGenereData();
+        // artistData = await user.getUserTopArtists("long_term", numArtists);
+        // console.log(artistData);
+        // constructGenereData();
+        genreData = data;
         loading = false;
         console.log(genreData);
     })
@@ -106,7 +110,7 @@
     input[type="number"] {
         width: 3em;
         padding: 0.2em;
-        border-radius: 0.5em;
+        border-radius: 0.1em;
         border: none;
         background-color: var(--background-light);
         color: var(--text);
@@ -197,7 +201,7 @@
         </button>
     </div> -->
     <div class="count">
-        <div>Artists: <input type="number" bind:value={numArtists} min="1" max="10" /></div>
+        <div>Artists: <input type="number" bind:value={numArtists} min="1" /></div>
     </div>
     
     <br>
@@ -212,22 +216,23 @@
     {#if loading}
         <div class="loader"></div>
     {:else}
-    {#if topArtistsTabSelected}
-        <div class="artist-container">
-            {#each artistData as artist, i (artist.id)}
-                <div in:fade|global={{ delay: i * 50, duration: 500 }} class="artist">
-                    <b style="color: var(--accent)">{i + 1}:</b> 
-                    <img src={artist.images.length ? artist.images[0].url: ""} alt="Artist" class="artist-image">
-                    <div>
-                        {artist.name}
+        {#if topArtistsTabSelected}
+            <div class="artist-container">
+                {#each artistData as artist, i (artist.id)}
+                    <div in:fade|global={{ delay: i * 50, duration: 500 }} class="artist">
+                        <b style="color: var(--accent)">{i + 1}:</b> 
+                        <img src={artist.images.length ? artist.images[0].url: ""} alt="Artist" class="artist-image">
+                        <div>
+                            {artist.name}
+                        </div>
                     </div>
-                </div>
-            {/each}
-        </div>
-    {:else}
-        <div>
-
-        </div>
-    {/if}
+                {/each}
+            </div>
+        {:else}
+        <br><br><br>
+            <div>
+                <GenreMap data={genreData} />
+            </div>
+        {/if}
     {/if}
 </main>
