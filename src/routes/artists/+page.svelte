@@ -32,6 +32,7 @@
     }
 
     function constructGenereData() {
+        genreData = {};
         for (const artist of artistData) {
             for (const g of artist.genres) {
                 if (genreData[g]) {
@@ -180,6 +181,13 @@
             background-color: var(--background);
         }
     }
+
+    .genre-map-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
 
 <svelte:head>
@@ -230,7 +238,7 @@
             </div>
         {:else}
         <br><br><br>
-            <div>
+            <div class="genre-map-container">
                 <GenreMap data={genreData} />
             </div>
         {/if}
